@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Area Calculator</title>
+<title>Area & Volume Calculator</title>
 
 <style>
     body {
@@ -12,22 +12,28 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
+        min-height: 100vh;
         margin: 0;
     }
 
     .container {
         background: white;
-        padding: 30px;
+        padding: 25px;
         border-radius: 15px;
         box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        width: 350px;
+        width: 380px;
         text-align: center;
     }
 
-    h2 {
-        margin-bottom: 20px;
+    h1 {
+        margin-bottom: 5px;
         color: #333;
+    }
+
+    p {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 15px;
     }
 
     select, input {
@@ -49,6 +55,7 @@
         font-size: 16px;
         cursor: pointer;
         transition: 0.3s;
+        margin-top: 5px;
     }
 
     button:hover {
@@ -61,35 +68,80 @@
         font-size: 18px;
         color: #1cc88a;
     }
+
+    .history {
+        margin-top: 15px;
+        text-align: left;
+        max-height: 120px;
+        overflow-y: auto;
+        font-size: 13px;
+        border-top: 1px solid #ddd;
+        padding-top: 10px;
+    }
 </style>
 </head>
 
 <body>
 
 <div class="container">
-    <h2>Area Calculator, this calculator calculates the area of the shape u choose</h2>
+    <h1>Area & Volume Calculator</h1>
+    <p>This calculator helps you calculate the area of 2D shapes and the volume of 3D shapes.</p>
 
     <select id="shape">
-        <option value="rectangle">Rectangle</option>
-        <option value="triangle">Triangle</option>
-        <option value="parallelogram">Parallelogram</option>
-        <option value="ellipse">Ellipse</option>
+        <option value="rectangle">Rectangle (Area)</option>
+        <option value="triangle">Triangle (Area)</option>
+        <option value="parallelogram">Parallelogram (Area)</option>
+        <option value="ellipse">Ellipse (Area)</option>
+        <option value="cube">Cube (Volume)</option>
+        <option value="rectangularPrism">Rectangular Prism (Volume)</option>
     </select>
 
     <input type="number" id="width" placeholder="Enter width">
     <input type="number" id="height" placeholder="Enter height">
+    <input type="number" id="depth" placeholder="Enter depth (for 3D shapes only)">
 
-    <button onclick="calculateArea()">Calculate Area</button>
+    <button onclick="calculate()">Calculate</button>
 
     <div class="result" id="result"></div>
+
+    <div class="history" id="history">
+        <strong>Calculation History:</strong>
+        <ul id="historyList"></ul>
+    </div>
 </div>
 
 <script>
-function calculateArea() {
+function calculate() {
     const shape = document.getElementById("shape").value;
     const width = parseFloat(document.getElementById("width").value);
     const height = parseFloat(document.getElementById("height").value);
+    const depth = parseFloat(document.getElementById("depth").value);
     const result = document.getElementById("result");
+    const historyList = document.getElementById("historyList");
+
+    let output;
+
+    if (shape === "cube") {
+        if (isNaN(width)) {
+            result.innerHTML = "Please enter a valid side length!";
+            return;
+        }
+        output = width ** 3;
+        result.innerHTML = "Volume = " + output.toFixed(2);
+        addHistory("Cube Volume: " + output.toFixed(2));
+        return;
+    }
+
+    if (shape === "rectangularPrism") {
+        if (isNaN(width) || isNaN(height) || isNaN(depth)) {
+            result.innerHTML = "Please enter valid numbers!";
+            return;
+        }
+        output = width * height * depth;
+        result.innerHTML = "Volume = " + output.toFixed(2);
+        addHistory("Rectangular Prism Volume: " + output.toFixed(2));
+        return;
+    }
 
     if (isNaN(width) || isNaN(height)) {
         result.innerHTML = "Please enter valid numbers!";
@@ -116,6 +168,14 @@ function calculateArea() {
     }
 
     result.innerHTML = "Area = " + area.toFixed(2);
+    addHistory(shape + " Area: " + area.toFixed(2));
+}
+
+function addHistory(text) {
+    const historyList = document.getElementById("historyList");
+    const li = document.createElement("li");
+    li.textContent = text;
+    historyList.appendChild(li);
 }
 </script>
 
