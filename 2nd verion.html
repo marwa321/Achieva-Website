@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Area Calculator</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #27D3F5, #F54927);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .container {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        width: 350px;
+        text-align: center;
+    }
+
+    h2 {
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    select, input {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+    }
+
+    button {
+        width: 100%;
+        padding: 10px;
+        background: #4e73df;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        background: #276CF5;
+    }
+
+    .result {
+        margin-top: 15px;
+        font-weight: bold;
+        font-size: 18px;
+        color: #1cc88a;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Area Calculator, this calculator calculates the area of the shape u choose</h2>
+
+    <select id="shape">
+        <option value="rectangle">Rectangle</option>
+        <option value="triangle">Triangle</option>
+        <option value="parallelogram">Parallelogram</option>
+        <option value="ellipse">Ellipse</option>
+    </select>
+
+    <input type="number" id="width" placeholder="Enter width">
+    <input type="number" id="height" placeholder="Enter height">
+
+    <button onclick="calculateArea()">Calculate Area</button>
+
+    <div class="result" id="result"></div>
+</div>
+
+<script>
+function calculateArea() {
+    const shape = document.getElementById("shape").value;
+    const width = parseFloat(document.getElementById("width").value);
+    const height = parseFloat(document.getElementById("height").value);
+    const result = document.getElementById("result");
+
+    if (isNaN(width) || isNaN(height)) {
+        result.innerHTML = "Please enter valid numbers!";
+        return;
+    }
+
+    let area;
+
+    switch(shape) {
+        case "rectangle":
+            area = width * height;
+            break;
+        case "triangle":
+            area = 0.5 * width * height;
+            break;
+        case "parallelogram":
+            area = width * height;
+            break;
+        case "ellipse":
+            area = Math.PI * width * height;
+            break;
+        default:
+            area = 0;
+    }
+
+    result.innerHTML = "Area = " + area.toFixed(2);
+}
+</script>
+
+</body>
+</html>
